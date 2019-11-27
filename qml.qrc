@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+    </qresource>
+    <qresource prefix="/font">
+        <file>NotoSansCJKsc-Black.otf</file>
+        <file>NotoSansCJKsc-Bold.otf</file>
+        <file>NotoSansCJKsc-DemiLight.otf</file>
+        <file>NotoSansCJKsc-Light.otf</file>
+        <file>NotoSansCJKsc-Medium.otf</file>
+        <file>NotoSansCJKsc-Regular.otf</file>
+        <file>NotoSansCJKsc-Thin.otf</file>
+    </qresource>
+</RCC>
