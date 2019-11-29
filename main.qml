@@ -14,8 +14,8 @@ Window {
     minimumWidth: 480
     minimumHeight: 680
     property QtObject currentDay: QtObject {
-        property int day : 1
-        property int month: 1
+        property int day : new Date().getDate()
+        property int month: new Date().getMonth()
     }
     Pane {
         anchors.fill: parent

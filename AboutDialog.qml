@@ -19,8 +19,9 @@ Dialog {
         width:parent.width
         height: parent.height
         clip: true
+        padding: 4
         ColumnLayout{
-            width: aboutDialog.width - 48
+            width: aboutDialog.width - 48 - 8 - 8
             spacing: 4
             anchors.centerIn: parent
 
