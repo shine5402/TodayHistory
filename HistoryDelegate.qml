@@ -22,11 +22,27 @@ ItemDelegate {
                 font.family: "Noto Sans CJK SC Medium"
                 Layout.preferredWidth: contentWidth
             }
-            Text {
+            RowLayout{
+                Label {
+                    id: yearText
+                    text: model.year
+                    font.family: "Noto Sans CJK SC Medium"
+                    background: Rectangle{
+                        radius: 8
+                        color: Material.accent
+                    }
+                    color: "white"
+                    Layout.preferredWidth: implicitWidth + 8
+                    Layout.preferredHeight: implicitHeight + 4
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+                Text {
                 id: description
                 text: model.des
                 elide: Text.ElideRight
                 Layout.fillWidth: parent
+            }
             }
         }
 //        Item{
