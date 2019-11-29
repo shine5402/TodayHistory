@@ -11,7 +11,7 @@ Dialog {
     modal: true
     standardButtons: DialogButtonBox.Ok
     onAccepted: aboutDialog.close()
-    width: parent.width
+    width: parent.width - 48
     height: parent.height * 0.75
     font.family: "Noto Sans CJK SC Regular"
 

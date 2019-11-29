@@ -6,27 +6,35 @@ import QtQuick.Layouts 1.3
 import "Icon.js" as MdiFont
 
 Window {
+    id: mainWindow
     visible: true
-    width: 480
+    width: 640
     height: 720
     title: qsTr("历史上的今天")
     minimumWidth: 480
     minimumHeight: 680
-
-    property int currentDay : 1
-    property int currentMonth: 1
-
+    property QtObject currentDay: QtObject {
+        property int day : 1
+        property int month: 1
+    }
     Pane {
         anchors.fill: parent
         padding: 16
-        anchors.left: parent.left
-        anchors.right: parent.right
         height: title.height
-        anchors.top: parent.top
         width: parent ? parent.width : 0
+        background:
+            Rectangle {
+            id: upBack
+            height:  header.height + parent.padding + 16
+            width: mainWindow.width
+            color: Material.primary
+        }
         ColumnLayout{
             anchors.fill: parent
+
             RowLayout {
+
+                id :header
                 Layout.preferredWidth:parent.width
                 Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
                 Text {
@@ -37,6 +45,7 @@ Window {
                     Layout.topMargin: 8
                     Layout.leftMargin: 8
                     Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+                    color: "white"
                 }
 
                 Item{
@@ -47,7 +56,9 @@ Window {
                     visible: false
                 }
                 Text{
-                    text: qsTr("%1月%2日").arg(currentMonth).arg(currentDay)
+                    text: qsTr("%1月%2日").arg(currentDay.month).arg(currentDay.day)
+                    color: "white"
+                    Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
                 }
                 Item{
                     Layout.preferredWidth: 16
@@ -59,10 +70,15 @@ Window {
                     font.family: "Material Design Icons"
                     text: MdiFont.Icon.history
                     font.pointSize: 16
+                    Material.background: Material.accent
+                    highlighted: true
+                    onClicked: chooseDayDialog.open()
                 }
                 RoundButton{
                     id : aboutButton
                     Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+                    Material.background: Material.accent
+                    highlighted: true
                     font.family: "Material Design Icons"
                     text: MdiFont.Icon.information
                     font.pointSize: 16
@@ -70,13 +86,17 @@ Window {
                 }
 
             }
+            Item{
+                height: 16}
             ScrollView{
+
                 Layout.fillHeight: parent
                 Layout.fillWidth: parent
                 clip: true
                 ScrollBar.horizontal.policy : ScrollBar.AsNeeded
                 ScrollBar.vertical.policy : ScrollBar.AsNeeded
                 ListView{
+
                     id : historyListView
                     model : HistoryModel {}
                     delegate : HistoryDelegate {}
@@ -90,7 +110,12 @@ Window {
         id : aboutDialog
         x: Math.round((parent.width - width) / 2)
         y: Math.round((parent.height - height) / 2)
-
+    }
+    ChooseDayDialog{
+        id : chooseDayDialog
+        x: Math.round((parent.width - width) / 2)
+        y: Math.round((parent.height - height) / 2)
+        currentDay: mainWindow.currentDay
     }
 }
 
