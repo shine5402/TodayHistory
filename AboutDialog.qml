@@ -67,6 +67,19 @@ Dialog {
                 wrapMode: TextEdit.Wrap
 
             }
+            Text{
+                Layout.topMargin: 12
+                text: "使用的开源产品"
+                font.family:  "Noto Sans CJK SC Medium"
+            }
+
+            TextArea{
+                Layout.fillWidth: parent
+                text: "- Qt 5.13.2, LGPL v3\n- Material Design Icons, SIL Open Font License\n- QmlBridgeForMaterialDesignIcons"
+                readOnly : true
+                wrapMode: TextEdit.Wrap
+
+            }
         }
     }
 
