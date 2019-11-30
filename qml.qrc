@@ -2,7 +2,6 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>HistoryModel.qml</file>
         <file>HistoryDelegate.qml</file>
         <file>AboutDialog.qml</file>
         <file>ChooseDayDialog.qml</file>

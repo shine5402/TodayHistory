@@ -1,50 +1,98 @@
 #include "historydatagetter.h"
 
-HistoryDataGetter::HistoryDataGetter(HistoryItemList allItems, QObject *parent) : QObject(parent), allItems(allItems)
+HistoryDataGetter::HistoryDataGetter(HistoryItemRefList allItems, QQmlContext* context, QObject *parent) : QObject(parent), allItems(allItems), context(context)
 {
     initSearcher();
+    setDate(QDate::currentDate().month(),QDate::currentDate().day());
 }
 
-HistoryItemList HistoryDataGetter::getEntries() const
+HistoryDataGetter::~HistoryDataGetter()
 {
-    return entries;
+    clearSearcher();
+}
+
+
+void HistoryDataGetter::refreshEntries()
+{
+    entries = findEntriesByDate(month, day);
+    QList<QObject*> objList;
+    for (auto i : entries)
+    {
+        objList.append(i);
+    }
+    context->setContextProperty("HistoryItemEntries",QVariant::fromValue(objList));
+    emit entriesChanged();
 }
 
 void HistoryDataGetter::setDate(int month, int day)
 {
-    entries = findEntriesByDate(month, day);
-    emit entriesChanged();
+    this->day = day;
+    emit dayChanged();
+    this->month = month;
+    emit monthChanged();
+    refreshEntries();
 }
 
-HistoryItemList HistoryDataGetter::findEntriesByDate(int month, int day)
+void HistoryDataGetter::setDate(HistoryDataGetter::Date date)
+{
+    setDate(date.month,date.day);
+}
+
+void HistoryDataGetter::setMonth(int month)
+{
+    this->month = month;
+    emit monthChanged();
+    refreshEntries();
+}
+
+void HistoryDataGetter::setDay(int day)
+{
+    this->day = day;
+    emit dayChanged();
+    refreshEntries();
+}
+
+int HistoryDataGetter::getDay() const
+{
+    return day;
+}
+
+int HistoryDataGetter::getMonth() const
+{
+    return month;
+}
+
+HistoryItemRefList HistoryDataGetter::findEntriesByDate(int month, int day)
 {
     auto refList = searcher.value(Date{month,day});
     if (refList && !refList->isEmpty())
     {
-        HistoryItemList list;
-        for (auto i : *refList)
-        {
-            if (i)
-                list.append(*i);
-        }
-        return list;
+        return *refList;
     }
     else {
-        return HistoryItemList{};
+        return HistoryItemRefList{};
     }
+}
+
+void HistoryDataGetter::clearSearcher()
+{
+    for (auto i : searcher) {
+        delete i;
+    }
+    searcher.clear();
 }
 
 void HistoryDataGetter::initSearcher()
 {
-    searcher.clear();
+    clearSearcher();
     for (auto item : allItems)
     {
-        auto list = searcher.value(Date{item.getMonth(),item.getDay()});
+        auto list = searcher.value(Date{item->getMonth(),item->getDay()});
         if (list)
-            list->append(&item);
+            list->append(item);
         else {
-            auto newList = new HistoryItemRefList{&item};
-            searcher.insert(Date{item.getMonth(),item.getDay()},newList);
+            auto newList = new HistoryItemRefList{item};
+            searcher.insert(Date{item->getMonth(),item->getDay()},newList);
         }
     }
 }

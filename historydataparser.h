@@ -9,20 +9,19 @@
 #include <QJsonValue>
 #include <QFile>
 
-class HistoryDataParser : public QObject
+
+
+class HistoryDataParser
 {
-    Q_OBJECT
 public:
-    explicit HistoryDataParser(QObject *parent = nullptr);
+    HistoryDataParser() = delete;
 
-signals:
-
-public slots:
-    static HistoryItem fromJsonObject(QJsonObject obj);
-    static HistoryItemList fromJsonArray(QJsonArray array);
-    static HistoryItemList fromJsonDocument(QJsonDocument doc);
-    static HistoryItemList fromJsonString(QString str);
-    static HistoryItemList fromJsonFile(QString fileName);
+public:
+    static HistoryItemRef fromJsonObject(QJsonObject obj, QObject* parent = nullptr);
+    static HistoryItemRefList fromJsonArray(QJsonArray array, QObject* parent = nullptr);
+    static HistoryItemRefList fromJsonDocument(QJsonDocument doc, QObject* parent = nullptr);
+    static HistoryItemRefList fromJsonString(QString str, QObject* parent = nullptr);
+    static HistoryItemRefList fromJsonFile(QString fileName, QObject* parent = nullptr);
 };
 
 #endif // HISTORYDATAPARSER_H

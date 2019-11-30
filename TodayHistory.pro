@@ -14,7 +14,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         historydatagetter.cpp \
-        historydataloader.cpp \
         historydataparser.cpp \
         historyitem.cpp \
         main.cpp
@@ -39,6 +38,5 @@ DISTFILES += \
 
 HEADERS += \
     historydatagetter.h \
-    historydataloader.h \
     historydataparser.h \
     historyitem.h

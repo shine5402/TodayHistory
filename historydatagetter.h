@@ -6,38 +6,49 @@
 #include <QHash>
 #include <QPair>
 #include <QtCore/qhashfunctions.h>
-
+#include <QQmlContext>
+#include <QDate>
 
 
 class HistoryDataGetter : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(HistoryItemList entries READ getEntries NOTIFY entriesChanged)
+    Q_PROPERTY(int day READ getDay WRITE setDay NOTIFY dayChanged)
+    Q_PROPERTY(int month READ getMonth WRITE setMonth NOTIFY monthChanged)
 public:
-    explicit HistoryDataGetter(HistoryItemList allItems, QObject *parent = nullptr);
+    explicit HistoryDataGetter(HistoryItemRefList allItems, QQmlContext* context, QObject *parent = nullptr);
+    ~HistoryDataGetter();
 
-    HistoryItemList getEntries() const;
-
-    void setDate(int month, int day);
     struct Date {
         int month;
         int day;
         bool operator==(const HistoryDataGetter::Date& other) const;
     };
+    void setDate(Date date);
+    void setMonth(int month);
+    void setDay(int day);
+    int getDay() const;
+
+    int getMonth() const;
+
 signals:
     void entriesChanged();
+    void dayChanged();
+    void monthChanged();
 public slots:
+    void setDate(int month, int day);
 
 private:
-    HistoryItemList entries;
-    HistoryItemList allItems;
+    HistoryItemRefList entries;
+    HistoryItemRefList allItems;
     int day;
     int month;
-    HistoryItemList findEntriesByDate(int month, int day);
-
-    using HistoryItemRefList = QList<HistoryItem *>;
+    HistoryItemRefList findEntriesByDate(int month, int day);
     QHash<Date,HistoryItemRefList *> searcher;
     void initSearcher();
+    void refreshEntries();
+    QQmlContext* context;
+    void clearSearcher();
 };
 
 uint qHash(const HistoryDataGetter::Date &key);

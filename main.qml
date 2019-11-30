@@ -14,9 +14,20 @@ Window {
     minimumWidth: 480
     minimumHeight: 680
     property QtObject currentDay: QtObject {
-        property int day : new Date().getDate()
-        property int month: new Date().getMonth()
+        property int day : HistoryDataGetter.day
+        property int month: HistoryDataGetter.month
     }
+    Binding{
+        target: HistoryDataGetter
+        property: "day"
+        value: currentDay.day
+    }
+    Binding{
+        target: HistoryDataGetter
+        property: "month"
+        value: currentDay.month
+    }
+
     Pane {
         anchors.fill: parent
         padding: 16
@@ -50,10 +61,6 @@ Window {
 
                 Item{
                     Layout.fillWidth: parent
-                }
-                BusyIndicator{
-                    Layout.preferredWidth: 48
-                    visible: false
                 }
                 Text{
                     text: qsTr("%1月%2日").arg(currentDay.month).arg(currentDay.day)
@@ -98,9 +105,8 @@ Window {
                 ListView{
 
                     id : historyListView
-                    model : HistoryModel {}
-                    delegate : HistoryDelegate {}
-
+                    model : HistoryItemEntries
+                    delegate : HistoryDelegate{}
 
                 }
             }

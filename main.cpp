@@ -4,7 +4,8 @@
 #include <QFile>
 #include <QResource>
 #include <QDir>
-#include "historydataloader.h"
+#include "historydatagetter.h"
+#include "historydataparser.h"
 
 int main(int argc, char *argv[])
 {
@@ -22,6 +23,10 @@ int main(int argc, char *argv[])
     QGuiApplication::setFont(QFont("Noto Sans CJK SC Regular"));
 
     QQmlApplicationEngine engine;
+
+    HistoryDataGetter historyDataGetter(HistoryDataParser::fromJsonFile(":/data.json"),engine.rootContext());
+    engine.rootContext()->setContextProperty("HistoryDataGetter",&historyDataGetter);
+
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
@@ -29,6 +34,8 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
     engine.load(url);
+
+
 
     return app.exec();
 }

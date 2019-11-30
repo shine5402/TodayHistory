@@ -1,55 +1,51 @@
 #include "historydataparser.h"
 
-HistoryDataParser::HistoryDataParser(QObject *parent) : QObject(parent)
+HistoryItemRef HistoryDataParser::fromJsonObject(QJsonObject obj, QObject* parent)
 {
-
+    return new HistoryItem(obj.value("day").toInt(),
+                           obj.value("des").toString(),
+                           obj.value("hits").toInt(),
+                           obj.value("id").toInt(),
+                           obj.value("month").toInt(),
+                           obj.value("pic").toString(),
+                           obj.value("title").toString(),
+                           obj.value("url").toString(),
+                           obj.value("year").toInt(),
+                           parent);
 }
 
-HistoryItem HistoryDataParser::fromJsonObject(QJsonObject obj)
+HistoryItemRefList HistoryDataParser::fromJsonArray(QJsonArray array, QObject* parent)
 {
-    return HistoryItem(obj.value("day").toInt(),
-                       obj.value("des").toString(),
-                       obj.value("hits").toInt(),
-                       obj.value("id").toInt(),
-                       obj.value("month").toInt(),
-                       obj.value("pic").toString(),
-                       obj.value("title").toString(),
-                       obj.value("url").toString(),
-                       obj.value("year").toInt());
-}
-
-HistoryItemList HistoryDataParser::fromJsonArray(QJsonArray array)
-{
-    HistoryItemList result;
+    HistoryItemRefList result;
     for (auto item : array)
     {
         auto obj = item.toObject();
-        result.append(fromJsonObject(obj));
+        result.append(fromJsonObject(obj,parent));
     }
     return result;
 }
 
-HistoryItemList HistoryDataParser::fromJsonDocument(QJsonDocument doc)
+HistoryItemRefList HistoryDataParser::fromJsonDocument(QJsonDocument doc, QObject* parent)
 {
     if (doc.isArray())
-        return fromJsonArray(doc.array());
+        return fromJsonArray(doc.array(),parent);
     else if (doc.isObject())
-        return HistoryItemList{fromJsonObject(doc.object())};
-    return HistoryItemList{};
+        return HistoryItemRefList{fromJsonObject(doc.object(),parent)};
+    return HistoryItemRefList{};
 }
 
-HistoryItemList HistoryDataParser::fromJsonString(QString str)
+HistoryItemRefList HistoryDataParser::fromJsonString(QString str, QObject* parent)
 {
-    return fromJsonDocument(QJsonDocument::fromJson(str.toUtf8()));
+    return fromJsonDocument(QJsonDocument::fromJson(str.toUtf8()),parent);
 }
 
-HistoryItemList HistoryDataParser::fromJsonFile(QString fileName)
+HistoryItemRefList HistoryDataParser::fromJsonFile(QString fileName, QObject* parent)
 {
     QFile file(fileName);
     file.open(QFile::ReadOnly | QFile::Text);
     auto data = file.readAll();
     QJsonParseError error;
-    auto result = fromJsonDocument(QJsonDocument::fromJson(data,&error));
+    auto result = fromJsonDocument(QJsonDocument::fromJson(data,&error),parent);
     return result;
 }
 

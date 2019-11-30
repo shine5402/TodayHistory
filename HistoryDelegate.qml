@@ -9,7 +9,7 @@ ItemDelegate {
     width: parent.width
     checkable: true
 
-    onClicked: Qt.openUrlExternally(model.url)
+    onClicked: Qt.openUrlExternally(model.modelData.url)
 
     contentItem: RowLayout {
 
@@ -17,7 +17,7 @@ ItemDelegate {
             id: texts
             Text {
                 id: title
-                text: model.title
+                text: model.modelData.title
                 Layout.margins: 4
                 font.family: "Noto Sans CJK SC Medium"
                 Layout.preferredWidth: contentWidth
@@ -25,7 +25,7 @@ ItemDelegate {
             RowLayout{
                 Label {
                     id: yearText
-                    text: model.year
+                    text: model.modelData.year
                     font.family: "Noto Sans CJK SC Medium"
                     background: Rectangle{
                         radius: 8
@@ -39,20 +39,15 @@ ItemDelegate {
                 }
                 Text {
                 id: description
-                text: model.des
+                text: model.modelData.des
                 elide: Text.ElideRight
                 Layout.fillWidth: parent
             }
             }
         }
-//        Item{
-//            Layout.fillWidth: parent
-//            Layout.fillHeight: parent
-//            Layout.minimumWidth: 0
-//        }
         Image {
             id: picture
-            source: model.pic
+            source: model.modelData.pic
             asynchronous: true
             Layout.preferredHeight: title.contentHeight + 4 + description.contentHeight
             Layout.preferredWidth: sourceSize.width * (Layout.preferredHeight / sourceSize.height)
