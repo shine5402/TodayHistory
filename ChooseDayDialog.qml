@@ -6,6 +6,7 @@ import QtQuick.Layouts 1.11
 import QtQuick.Window 2.11
 import Qt.labs.calendar 1.0
 import QtQuick.Controls.Material 2.3
+import "Icon.js" as MdiFont
 
 Dialog {
     id : chooseDayDialog
@@ -67,6 +68,20 @@ Dialog {
                 id : dayComboBox
                 displayText: currentText + " 日"
                 model: modelForNum(dayOfMonth(parseInt(monthComboBox.currentText)))
+
+            }
+            RoundButton{
+                font.family: "Material Design Icons"
+                text: MdiFont.Icon.calendarToday
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+                font.pointSize: 16
+                Material.foreground: Material.accent
+                Material.background: "white"
+                onClicked: {
+                    monthComboBox.currentIndex = new Date().getMonth();
+                    dayComboBox.currentIndex = new Date().getDate() - 1;
+
+                }
 
             }
         }
