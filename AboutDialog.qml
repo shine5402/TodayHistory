@@ -49,7 +49,7 @@ Dialog {
             }
 
             TextArea{
-                text: "www.todayonhistory.com，更新于2019年11月23日。"
+                text: "读取自data.json。出厂自带版本来自www.todayonhistory.com，更新于2019年11月23日。"
                 wrapMode: TextEdit.Wrap
                 Layout.fillWidth: parent
                 readOnly: true
