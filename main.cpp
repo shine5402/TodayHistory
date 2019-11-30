@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    HistoryDataGetter historyDataGetter(HistoryDataParser::fromJsonFile(":/data.json"),engine.rootContext());
+    HistoryDataGetter historyDataGetter(HistoryDataParser::fromJsonFile(QDir(qApp->applicationDirPath()).filePath("data.json")),engine.rootContext());
     engine.rootContext()->setContextProperty("HistoryDataGetter",&historyDataGetter);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));

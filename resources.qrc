@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
         <file>LICENSE</file>
-        <file>data.json</file>
     </qresource>
 </RCC>

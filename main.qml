@@ -96,20 +96,27 @@ Window {
             Item{
                 height: 16}
             ScrollView{
-
                 Layout.fillHeight: parent
                 Layout.fillWidth: parent
                 clip: true
                 ScrollBar.horizontal.policy : ScrollBar.AsNeeded
                 ScrollBar.vertical.policy : ScrollBar.AsNeeded
                 ListView{
-
                     id : historyListView
                     model : HistoryItemEntries
                     delegate : HistoryDelegate{}
-
+                    visible: count !== 0
                 }
+
             }
+
+
+        }
+        Text {
+            id: noData
+            visible: historyListView.count === 0
+            text: "程序没有在数据中找到给定日期的历史信息。"
+            anchors.centerIn: parent
         }
     }
     AboutDialog{
