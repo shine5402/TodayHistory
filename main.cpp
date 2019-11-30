@@ -4,6 +4,7 @@
 #include <QFile>
 #include <QResource>
 #include <QDir>
+#include "historydataloader.h"
 
 int main(int argc, char *argv[])
 {
